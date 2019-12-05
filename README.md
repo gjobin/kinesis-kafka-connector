@@ -73,6 +73,7 @@ You can build the project by running "maven package" and it will build amazon-ki
 | topics | Kafka topics from where you want to consume messages. It can be single topic or comma separated list of topics      |   -  |
 | region| Specify region of your Kinesis Firehose | - |
 | streamName | Kinesis Stream Name.| - |
+| schemaEnable | Use data with embeded schema. Disable to use pure Json | true |
 | usePartitionAsHashKey | Using Kafka partition key as hash key for Kinesis streams.  | false |
 | maxBufferedTime | Maximum amount of time (milliseconds) a record may spend being buffered before it gets sent. Records may be sent sooner than this depending on the other buffering limits. Range: [100..... 9223372036854775807] | 15000 |
 | maxConnections | Maximum number of connections to open to the backend. HTTP requests are sent in parallel over multiple connections. Range: [1...256]. | 24 |
