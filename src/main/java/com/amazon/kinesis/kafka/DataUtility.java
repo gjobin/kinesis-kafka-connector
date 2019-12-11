@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import com.google.gson.Gson;
 
+import lombok.extern.log4j.Log4j;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Schema.Type;
 import org.apache.kafka.connect.data.Struct;
@@ -17,6 +18,7 @@ import org.apache.kafka.connect.sink.SinkRecord;
 
 import com.amazonaws.services.kinesisfirehose.model.Record;
 
+@Log4j
 public class DataUtility {
 
 	/**
@@ -64,8 +66,7 @@ public class DataUtility {
 			try {
 				return ByteBuffer.wrap(((String) value).getBytes("UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Message cannot be translated:" + e.getLocalizedMessage());
+				log.error("Message cannot be translated", e);
 			}
 		case ARRAY:
 			Schema sch = schema.valueSchema();
@@ -132,7 +133,7 @@ public class DataUtility {
             try {
 				return ByteBuffer.wrap(((String) value).getBytes("UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				System.out.println("Message cannot be translated:" + e.getLocalizedMessage());
+				log.error("Message cannot be translated", e);
 			}
 		}
 		if(value instanceof HashMap) {		
@@ -147,7 +148,7 @@ public class DataUtility {
 			else if (value instanceof ByteBuffer)
 				return (ByteBuffer) value;
         }
-		System.out.println("Unsupported value type: " + value.getClass());
+		log.error("Unsupported value type: " + value.getClass());
 		return null;
 	}
 

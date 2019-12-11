@@ -4,6 +4,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Iterables;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import lombok.extern.log4j.Log4j;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.connect.errors.DataException;
@@ -17,11 +23,8 @@ import com.amazonaws.services.kinesis.producer.KinesisProducer;
 import com.amazonaws.services.kinesis.producer.KinesisProducerConfiguration;
 import com.amazonaws.services.kinesis.producer.UserRecordFailedException;
 import com.amazonaws.services.kinesis.producer.UserRecordResult;
-import com.google.common.collect.Iterables;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 
+@Log4j
 public class AmazonKinesisSinkTask extends SinkTask {
 
 	private String streamName;
@@ -139,7 +142,8 @@ public class AmazonKinesisSinkTask extends SinkTask {
 			else
 				f = addUserRecord(kinesisProducer, streamName, partitionKey, usePartitionAsHashKey, sinkRecord);
 
-			Futures.addCallback(f, callback);
+
+			Futures.addCallback(f, callback, MoreExecutors.directExecutor());
 
 		}
 	}
@@ -164,13 +168,11 @@ public class AmazonKinesisSinkTask extends SinkTask {
 								// notify/log that Kinesis Producers have
 								// buffered values
 								// but are not being sent
-								System.out.println(
-										"Kafka Consumption has been stopped because Kinesis Producers has buffered messages above threshold");
+								log.error("Kafka Consumption has been stopped because Kinesis Producers has buffered messages above threshold");
 								sleepCount = 0;
 							}
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							log.error("Interrupted", e);
 						}
 					}
 					if (pause)
@@ -194,13 +196,11 @@ public class AmazonKinesisSinkTask extends SinkTask {
 							// notify/log that Kinesis Producers have buffered
 							// values
 							// but are not being sent
-							System.out.println(
-									"Kafka Consumption has been stopped because Kinesis Producers has buffered messages above threshold");
+							log.error("Kafka Consumption has been stopped because Kinesis Producers has buffered messages above threshold");
 							sleepCount = 0;
 						}
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						log.error("Interrupted", e);
 					}
 				}
 				if (pause)
@@ -213,7 +213,7 @@ public class AmazonKinesisSinkTask extends SinkTask {
 	}
 
 	private ListenableFuture<UserRecordResult> addUserRecord(KinesisProducer kp, String streamName, String partitionKey,
-			boolean usePartitionAsHashKey, SinkRecord sinkRecord) {
+															 boolean usePartitionAsHashKey, SinkRecord sinkRecord) {
 
 		// If configured use kafka partition key as explicit hash key
 		// This will be useful when sending data from same partition into
