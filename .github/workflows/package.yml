@@ -15,7 +15,5 @@ jobs:
         with:
           java-version: 11.0.3
       - name: Package
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mvn deploy -Dregistry=https://maven.pkg.github.com/gjobin/releases -Dtoken=$GITHUB_TOKEN
+          mvn deploy -Dregistry=https://maven.pkg.github.com/gjobin/releases -Dtoken=${{ secrets.GITHUB_TOKEN }}
