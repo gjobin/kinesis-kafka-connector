@@ -13,7 +13,7 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>GitHub</id>
+			<id>github</id>
 			<name>GitHub Repository</name>
 			<url>https://maven.pkg.github.com/gjobin</url>
 			<layout>default</layout>
