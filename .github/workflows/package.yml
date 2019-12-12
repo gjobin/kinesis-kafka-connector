@@ -1,0 +1,16 @@
+name: Release Package
+on: push
+#  release:
+#    types:
+#      - created
+jobs:
+  release:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Package
+        uses: docker://maven:3.6.3-jdk-11-openj9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mvn deploy -Dregistry=https://maven.pkg.github.com/gjobin/releases -Dtoken=$GITHUB_TOKEN
