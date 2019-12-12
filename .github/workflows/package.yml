@@ -10,8 +10,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Maven
-        uses: docker://maven:3.6.3-jdk-11-openj9
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.3
       - name: Package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
