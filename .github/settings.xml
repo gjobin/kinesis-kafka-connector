@@ -23,7 +23,7 @@
                 <repository>
                     <id>github</id>
                     <name>GitHub Repository</name>
-                    <url>https://maven.pkg.github.com/gjobin</url>
+                    <url>https://maven.pkg.github.com/gjobin/release</url>
                 </repository>
             </repositories>
         </profile>
