@@ -10,6 +10,16 @@
 	<name>amazon-kinesis-kafka-connector</name>
 	<url>http://maven.apache.org</url>
 
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>GitHub</id>
+			<name>GitHub Repository</name>
+			<url>https://maven.pkg.github.com/gjobin</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
