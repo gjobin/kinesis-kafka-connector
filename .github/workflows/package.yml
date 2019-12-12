@@ -1,15 +1,18 @@
 name: Release Package
-on: push
+on: [push]
 #  release:
 #    types:
 #      - created
 jobs:
-  release:
+  package:
     name: Package
     runs-on: ubuntu-latest
     steps:
-      - name: Package
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Maven
         uses: docker://maven:3.6.3-jdk-11-openj9
+      - name: Package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
