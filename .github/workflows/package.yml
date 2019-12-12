@@ -19,5 +19,5 @@ jobs:
           GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo $GITHUB_TOKEN
+          echo Token : $GITHUB_TOKEN
           mvn -B --settings .github/settings.xml deploy
